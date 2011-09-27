@@ -22,8 +22,8 @@ public class Four implements IFourSquareAPI {
 	private String accessToken;
 	private LocationManager locmana;
 	private LocationListener loclis;
-	private String l;
-	private String long_l;
+	static private String l;
+	static private String long_l;
 	private Location loc;
 
 	public Four(String accessToken, LocationManager locmana) {
@@ -67,6 +67,7 @@ public class Four implements IFourSquareAPI {
 
 	public String getVenues() {
 		String Json = "";
+		Log.i("GSPNEW", "Location is set to : Latitude: " + l+ " Longtitude: " + long_l);
 		this.locmana.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this.loclis);
 		Log.i("GPS", "Request new location");
 		String UriVenus = "https://api.foursquare.com/v2/venues/explore?ll="

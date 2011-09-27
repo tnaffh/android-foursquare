@@ -47,7 +47,5 @@ public class FourSquareLogin extends Activity {
             }
         });
         webview.loadUrl(url);
-        finish();
-        
     }
 }
