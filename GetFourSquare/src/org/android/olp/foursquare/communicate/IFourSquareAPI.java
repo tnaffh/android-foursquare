@@ -10,5 +10,5 @@ package org.android.olp.foursquare.communicate;
  *
  */
 public interface IFourSquareAPI {
-
+	public String getVenus();
 }
