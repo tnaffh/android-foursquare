@@ -75,7 +75,7 @@ public class GetPOI extends Activity{
 		int loc = (int)locID;
 		Toast toast = Toast.makeText(getApplicationContext(), Integer.toString(loc), Toast.LENGTH_SHORT);
 		toast.show();
-		String UriVenus = "https://api.foursquare.com/v2/venues/"+Integer.toString(loc)+"?oauth_token="+accessToken;
+		String UriVenus = "https://api.foursquare.com/v2/venues/explore?ll=40.7,-74"+/*+Integer.toString(loc)+*/"&oauth_token="+accessToken;
 		HttpGet get = new HttpGet(UriVenus);
 		HttpClient client = new DefaultHttpClient();
 		try {
