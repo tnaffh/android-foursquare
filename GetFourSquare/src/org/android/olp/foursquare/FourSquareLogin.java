@@ -1,10 +1,14 @@
 package org.android.olp.foursquare;
 
+
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class FourSquareLogin extends Activity {
@@ -26,10 +30,19 @@ public class FourSquareLogin extends Activity {
                 String fragment = "#access_token=";
                 int start = url.indexOf(fragment);
                 if (start > -1) {
+                    // You can use the accessToken for api calls now.
                     String accessToken = url.substring(start + fragment.length(), url.length());
-                    Toast.makeText(null, "Logined", start).show();
+                    Bundle sendAccessToken = new Bundle();
+                    sendAccessToken.putString("token", accessToken);
+                    Intent i = new Intent(FourSquareLogin.this,GetPOI.class);
+                    i.putExtras(sendAccessToken);
+                    startActivity(i);
+//                    /Log.v(TAG, "OAuth complete, token: [" + accessToken + "].");
+                    Toast.makeText(FourSquareLogin.this, "Token: " + accessToken, Toast.LENGTH_SHORT).show();
                 }
             }
-       });
+        });
+        webview.loadUrl(url);
+        //finish();
     }
 }
