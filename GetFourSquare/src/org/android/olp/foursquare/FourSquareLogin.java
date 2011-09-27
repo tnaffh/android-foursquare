@@ -36,9 +36,13 @@ public class FourSquareLogin extends Activity {
                 int start = url.indexOf(fragment);
                 if (start > -1) {
                     String accessToken = url.substring(start + fragment.length(), url.length());
-                    Toast.makeText(FourSquareLogin.this, "Token: " + accessToken, Toast.LENGTH_SHORT).show();
-                    locmana = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-                    Four getVnus = new Four(accessToken, locmana);
+                    //Toast.makeText(FourSquareLogin.this, "Token: " + accessToken, Toast.LENGTH_SHORT).show();
+                    Log.i("OAUTH", "Token is got: "+accessToken);
+                    Bundle b = new Bundle();
+                    b.putString("token", accessToken);
+                    Intent i = new Intent(FourSquareLogin.this, VenueList.class);
+                    i.putExtras(b);
+                    startActivity(i);
                 }
             }
         });
