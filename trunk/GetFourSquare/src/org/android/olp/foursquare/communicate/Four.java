@@ -16,6 +16,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 public class Four implements IFourSquareAPI {
 	private String accessToken;
@@ -23,41 +24,55 @@ public class Four implements IFourSquareAPI {
 	private LocationListener loclis;
 	private String l;
 	private String long_l;
-	public Four(String AccessToken,LocationManager locmana){
+	private Location loc;
+
+	public Four(String accessToken, LocationManager locmana) {
 		this.accessToken = accessToken;
 		this.locmana = locmana;
-	}
-	public String getVenus(){
-		String Json = "";
-        loclis = new LocationListener() {
-			
+		this.loclis = new LocationListener() {
+
 			@Override
-			public void onStatusChanged(String provider, int status, Bundle extras) {
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
 				// TODO Auto-generated method stub
-				
+				Log.i("GPS", "OnStatusChanged");
+
 			}
-			
+
 			@Override
 			public void onProviderEnabled(String provider) {
 				// TODO Auto-generated method stub
-				
+				Log.i("GPS", "GPS in ON");
+
 			}
-			
+
 			@Override
 			public void onProviderDisabled(String provider) {
 				// TODO Auto-generated method stub
-				
+				Log.i("GPS", "GPS is OFF");
+
 			}
-			
+
 			@Override
 			public void onLocationChanged(Location location) {
 				// TODO Auto-generated method stub
 				l = Double.toString(location.getLatitude());
 				long_l = Double.toString(location.getLongitude());
+				Log.i("GSP", "Location is set to : Latitude: " + l
+						+ " Longtitude: " + long_l);
 			}
 		};
-		locmana.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, loclis);
-		String UriVenus = "https://api.foursquare.com/v2/venues/explore?ll="+l+","+long_l+"&oauth_token="+accessToken;
+		
+	}
+
+	public String getVenues() {
+		String Json = "";
+		this.locmana.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this.loclis);
+		Log.i("GPS", "Request new location");
+		String UriVenus = "https://api.foursquare.com/v2/venues/explore?ll="
+				+ l + "," + long_l + "&oauth_token=" + accessToken;
+		Log.i("FSQAPI", UriVenus);
+		Log.i("GSP", "Latitude: " + l + " Longtitude: " + long_l);
 		HttpGet get = new HttpGet(UriVenus);
 		HttpClient client = new DefaultHttpClient();
 		try {
