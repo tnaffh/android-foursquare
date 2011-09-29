@@ -7,6 +7,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -21,30 +24,31 @@ public class VenueList extends Activity {
 	@Override
 	public void onCreate(Bundle bundel) {
 		super.onCreate(bundel);
-		
+
 		setContentView(R.layout.venue_list);
-		TextView txt_venue_list_title = (TextView)findViewById(R.id.venue_list_title);
 		accessToken = this.getIntent().getExtras().getString("token");
-		txt_venue_list_title.setText(accessToken);
-		
 		fsqAPI = new Four(accessToken, (LocationManager)getSystemService(Context.LOCATION_SERVICE));
-		
 		txt_venue_out = (EditText)findViewById(R.id.venue_list_out);
 		txt_venue_out.setText(fsqAPI.getVenues());
 		
-		// use button to update GPS
-		
-		Button loadGPS = (Button)findViewById(R.id.ChekIn);
-		loadGPS.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				fsqAPI = new Four(accessToken, (LocationManager)getSystemService(Context.LOCATION_SERVICE));
-				txt_venue_out.setText(fsqAPI.getVenues());
-				
-			}
-		});
-		
+	}
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.check:
+			fsqAPI = new Four(accessToken, (LocationManager)getSystemService(Context.LOCATION_SERVICE));
+			txt_venue_out.setText(fsqAPI.getVenues());
+			return true;
+		case R.id.Logout:
+			return true;
+		}
+		return false;
 	}
 }
