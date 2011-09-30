@@ -2,6 +2,9 @@ package org.android.olp.foursquare;
 
 import org.android.olp.foursquare.communicate.Four;
 import org.android.olp.foursquare.communicate.IFourSquareAPI;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -30,7 +33,6 @@ public class VenueList extends Activity {
 		fsqAPI = new Four(accessToken, (LocationManager)getSystemService(Context.LOCATION_SERVICE));
 		txt_venue_out = (EditText)findViewById(R.id.venue_list_out);
 		txt_venue_out.setText(fsqAPI.getVenues());
-		
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,7 +46,16 @@ public class VenueList extends Activity {
 		switch (item.getItemId()) {
 		case R.id.check:
 			fsqAPI = new Four(accessToken, (LocationManager)getSystemService(Context.LOCATION_SERVICE));
-			txt_venue_out.setText(fsqAPI.getVenues());
+			String jsonInput = fsqAPI.getVenues();
+			try {
+				JSONObject input = new JSONObject(jsonInput);
+				JSONObject groups = input.getJSONObject("response").getJSONArray("groups").getJSONObject(0);
+				JSONArray items = groups.getJSONArray("items");
+				txt_venue_out.setText(items.toString());
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			return true;
 		case R.id.Logout:
 			return true;
