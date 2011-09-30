@@ -1,22 +1,15 @@
 package org.android.olp.foursquare;
 
 
-import org.android.olp.foursquare.communicate.Four;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class FourSquareLogin extends Activity {
-	private LocationManager locmana;
     public static final String CALLBACK_URL = "http://www.google.com";
     public static final String CLIENT_ID = "V1ITGJWM1UMEBYSBIUXWKSDU0HBSEJ15FDAGITC2M2N4WTUX";
     @Override
