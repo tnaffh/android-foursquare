@@ -10,70 +10,32 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
-import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
 public class Four implements IFourSquareAPI {
 	private String accessToken;
-	private LocationManager locmana;
-	private LocationListener loclis;
-	static private String l;
-	static private String long_l;
-	private Location loc;
+	private LocationManager locMana;
+	private LocationLst locLst;
 
 	public Four(String accessToken, LocationManager locmana) {
 		this.accessToken = accessToken;
-		this.locmana = locmana;
-		this.loclis = new LocationListener() {
-
-			@Override
-			public void onStatusChanged(String provider, int status,
-					Bundle extras) {
-				// TODO Auto-generated method stub
-				Log.i("GPS", "OnStatusChanged");
-
-			}
-
-			@Override
-			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
-				Log.i("GPS", "GPS in ON");
-
-			}
-
-			@Override
-			public void onProviderDisabled(String provider) {
-				// TODO Auto-generated method stub
-				Log.i("GPS", "GPS is OFF");
-
-			}
-
-			@Override
-			public void onLocationChanged(Location location) {
-				// TODO Auto-generated method stub
-				l = Double.toString(location.getLatitude());
-				long_l = Double.toString(location.getLongitude());
-				Log.i("GSP", "Location is set to : Latitude: " + l
-						+ " Longtitude: " + long_l);
-			}
-		};
-		
+		this.locMana = locmana;
+		this.locLst = new LocationLst();
 	}
+
 
 	public String getVenues() {
 		String Json = "";
-		Log.i("GSPNEW", "Location is set to : Latitude: " + l+ " Longtitude: " + long_l);
-		this.locmana.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this.loclis);
-		Log.i("GPS", "Request new location");
+		Log.i("GSP", "Getting the location ...");
+		locMana.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locLst);
+		Log.i("GPS", "Location is requested. Longtitude: "+locLst.getLongtitude()+" Latitude: "+locLst.getLatitude());
 		String UriVenus = "https://api.foursquare.com/v2/venues/explore?ll="
-				+ l + "," + long_l + "&oauth_token=" + accessToken;
+				+ locLst.getLatitude()+ "," + locLst.getLongtitude() + "&oauth_token=" + accessToken;
 		Log.i("FSQAPI", UriVenus);
-		Log.i("GSP", "Latitude: " + l + " Longtitude: " + long_l);
 		HttpGet get = new HttpGet(UriVenus);
 		HttpClient client = new DefaultHttpClient();
 		try {
@@ -88,5 +50,46 @@ public class Four implements IFourSquareAPI {
 			e.printStackTrace();
 		}
 		return Json;
+	}
+	
+	private class LocationLst implements LocationListener {
+		
+		private double longtitude;
+		private double latitude;
+
+		@Override
+		public void onLocationChanged(Location location) {
+			// TODO Auto-generated method stub
+			Log.d("GPS", "The location is set to: "+location.getLatitude()+ " " + location.getLongitude());
+			longtitude = location.getLongitude();
+			latitude = location.getLatitude();
+		}
+
+		@Override
+		public void onProviderDisabled(String provider) {
+			// TODO Auto-generated method stub
+			Log.d("GPS", "GPS is turned OFF");
+		}
+
+		@Override
+		public void onProviderEnabled(String provider) {
+			// TODO Auto-generated method stub
+			Log.d("GPS", "GPS in turned ON");
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras) {
+			// TODO Auto-generated method stub
+			Log.d("GPS", "GPS status is changed");
+		}
+		
+		public double getLongtitude() {
+			return longtitude;
+		}
+		
+		public double getLatitude() {
+			return latitude;
+		}
+		
 	}
 }
