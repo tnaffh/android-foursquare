@@ -11,7 +11,7 @@ import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,14 +29,11 @@ public class Venues extends ListActivity {
 			List<JSONObject> venue_names = new ArrayList<JSONObject>();
 			for (int i = 0; i< js.length(); i++) {
 				venue_names.add(js.optJSONObject(i));
-			}
-			// Create an array of Strings, that will be put to our ListActivity
-			String[] names = new String[] { "Linux", "Windows7", "Eclipse",
-					"Suse", "Ubuntu", "Solaris", "Android", "iPhone" };
-//			venue_names.toArray(names);
-			// Create an ArrayAdapter, that will actually make the Strings above
-			// appear in the ListView
+				Log.i("DATA-NAME", js.optJSONObject(i).toString());
+			} 
+
 			this.setListAdapter(new MyListAdapter(this, venue_names));
+			
 		} catch (JSONException e) {
 			Log.e("JSON", e.getMessage());
 		}
