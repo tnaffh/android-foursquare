@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,9 +55,13 @@ public class MyListAdapter extends ArrayAdapter<JSONObject> {
 			holder = (ViewHolder) rowView.getTag();
 		}
 
-		int x = 1;
 		try {
-			Log.i("JSON", names.get(position).toString());
+		
+		Log.i("JSON", names.get(position).toString());
+		
+		ImageLoader drawable = new ImageLoader();
+		holder.imageView.setImageDrawable(drawable.loadImageUrl(names.get(position).getString("icon")));
+			
 		holder.textView.setText(names.get(position).getString("name"));
 		holder.txtAddress.setText(names.get(position).getString("address"));
 		holder.txtDistance.setText("" + names.get(position).getInt("distance") + " feet");

@@ -18,10 +18,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class VenueList extends Activity {
@@ -46,7 +43,7 @@ public class VenueList extends Activity {
 				// TODO Auto-generated method stub
 				String s = fsqAPI.getVenues();
 				Log.i("GPS", s);
-				EditText txt_out = (EditText) findViewById(R.id.venue_list_out);
+				//EditText txt_out = (EditText) findViewById(R.id.venue_list_out);
 				try {
 					js = new JSONObject(s);
 					JSONArray groups = js.getJSONObject("response")
@@ -71,6 +68,14 @@ public class VenueList extends Activity {
 											.getJSONObject("venue")
 											.getJSONObject("location")
 											.optInt("distance"));
+							
+							tempObj.put("icon", 
+									items.optJSONObject(j)
+										.getJSONObject("venue")
+										.getJSONArray("categories")
+										.getJSONObject(0)
+										.optString("icon"));
+							
 							venue_names.add(tempObj);
 							Log.i("JSON", tempObj.toString());
 						}
@@ -125,8 +130,16 @@ public class VenueList extends Activity {
 											.getJSONObject("venue")
 											.getJSONObject("location")
 											.optInt("distance"));
+							tempObj.put("icon", 
+									items.optJSONObject(j)
+										.getJSONObject("venue")
+										.getJSONArray("categories")
+										.getJSONObject(0)
+										.optString("icon"));
+							
 							venue_names.add(tempObj);
 							Log.i("JSON", tempObj.toString());
+							
 						}
 					}
 					Log.i("DATA", venue_names.toString());
